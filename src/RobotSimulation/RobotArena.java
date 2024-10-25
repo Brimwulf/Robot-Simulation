@@ -1,22 +1,23 @@
 package RobotSimulation;
 import java.util.Random;
+import java.util.ArrayList;
 
 public class RobotArena {
     private int x_size;
     private int y_size;
-    private Robot[] robot;
-    private int numRobots;
+    private ArrayList<Robot> robot;
+    //private int numRobots;
     // This line is needed to store any robots that are created in the arena.
 
-    public int getNumRobots() {
-        return numRobots;
-    }
+//    public int getNumRobots() {
+//        return numRobots;
+//    }
 
     public RobotArena(int x_size, int y_size, int numRobots) {
         this.x_size = x_size;
         this.y_size = y_size;
-        this.numRobots = numRobots;
-        robot = new Robot[numRobots];
+        //this.numRobots = numRobots;
+        robot = new ArrayList<>();
     }
 
     /**
@@ -27,6 +28,7 @@ public class RobotArena {
      * @return      true if robot at xy is found, false otherwise.
      */
     public boolean isHere(int rNum, int sx, int sy) {
+        //Need to change the robots here to work with array list.
         if(robot[rNum].getX() == sx && robot[rNum].getY() == sy) return true;
         return false;
     }
