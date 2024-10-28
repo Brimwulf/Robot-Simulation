@@ -28,12 +28,13 @@ public class RobotInterface {
                 case 'A' :
                 case 'a' :
                     int rNum = 0;
-                    myArena.addRobot(rNum,rNum+1);	// add a new Robot to arena
+                    myArena.addRobot(rNum+1);	// add a new Robot to arena
                     rNum++;
                     break;
                 case 'I' :
                 case 'i' :
                     System.out.print(myArena.toString(myArena.getNumRobots()));
+                    //This needs to be the number of items in ArrayList
                     break;
                 case 'x' : 	ch = 'X';				// when X detected program ends
                     break;
