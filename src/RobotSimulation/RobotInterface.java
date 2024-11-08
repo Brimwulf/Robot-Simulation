@@ -1,4 +1,5 @@
 package RobotSimulation;
+import java.awt.*;
 import java.util.Scanner;
 
 /**
@@ -17,11 +18,11 @@ public class RobotInterface {
      */
     public RobotInterface() {
         s = new Scanner(System.in);			// set up scanner for user input
-        myArena = new RobotArena(20, 6, 0);	// create arena of size 20*6
+        myArena = new RobotArena(20, 10, 0);	// create arena of size 20*6
 
         char ch = ' ';
         do {
-            System.out.print("Enter (A)dd Robot, get (I)nformation or e(X)it > ");
+            System.out.print("Enter (A)dd Robot, get (I)nformation, (D)isplay canvas or e(X)it > ");
             ch = s.next().charAt(0);
             s.nextLine();
             switch (ch) {
@@ -36,12 +37,23 @@ public class RobotInterface {
                     System.out.print(myArena.toString(myArena.getNumRobots()));
                     //This needs to be the number of items in ArrayList
                     break;
+                case 'D' : case 'd' :
+                    doDisplay();
+                    break;
                 case 'x' : 	ch = 'X';				// when X detected program ends
                     break;
             }
         } while (ch != 'X');						// test if end
 
         s.close();									// close scanner
+    }
+
+    void doDisplay() {
+        int x_size = myArena.getX_size();
+        int y_size = myArena.getY_size();
+        ConsoleCanvas canvas = new ConsoleCanvas(y_size, x_size, "32024813");
+        myArena.showRobots(canvas);
+        canvas.printCanvas();
     }
 
     public static void main(String[] args) {

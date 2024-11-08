@@ -1,5 +1,7 @@
 package RobotSimulation;
 
+import java.io.Console;
+
 public class Robot {
     private int x;
     private int y;
@@ -25,6 +27,14 @@ public class Robot {
 
     public String toString() {
         return "Robot " + num + " is at " + x + ", " + y;
+    }
+
+    /**
+     * display the robot on canvas
+     * @param c the canvas used.
+     */
+    public void displayRobot(ConsoleCanvas c) {
+        c.showIt(y,x,'R');
     }
 
     public static void main(String[] args) {

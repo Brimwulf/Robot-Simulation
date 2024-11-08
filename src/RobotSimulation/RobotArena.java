@@ -1,4 +1,5 @@
 package RobotSimulation;
+import java.io.Console;
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -6,11 +7,17 @@ public class RobotArena {
     private int x_size;
     private int y_size;
     private ArrayList<Robot> robot;
-    //private int numRobots;
-    // This line is needed to store any robots that are created in the arena.
 
     public int getNumRobots() {
         return robot.size();
+    }
+
+    public int getX_size() {
+        return x_size;
+    }
+
+    public int getY_size() {
+        return y_size;
     }
 
     public RobotArena(int x_size, int y_size, int numRobots) {
@@ -60,6 +67,13 @@ public class RobotArena {
             returnstr += robot.get(i) + "\n";
         }
         return returnstr;
+    }
+
+    public void showRobots(ConsoleCanvas c) {
+        for(int i = 0; i < robot.size(); i++) {
+            //Accessing robot number i in robot and accessing the displayRobot method.
+            robot.get(i).displayRobot(c);
+        }
     }
 
     public static void main(String[] args) {
