@@ -21,6 +21,8 @@ public class RobotInterface {
         myArena = new RobotArena(20, 6, 0);	// create arena of size 20*6
         int x_size = myArena.getX_size();
         int y_size = myArena.getY_size();
+        // Creating canvas object here rather than in doDisplay. This is better than create a new object each time
+        // doDisplay is called.
         ConsoleCanvas canvas = new ConsoleCanvas(y_size+1, x_size+1, "32024813");
         int rNum = 0;
 
@@ -40,7 +42,8 @@ public class RobotInterface {
                     System.out.print(myArena.toString(myArena.getNumRobots()));
                     //This needs to be the number of items in ArrayList
                     break;
-                case 'D' : case 'd' :
+                case 'D' :
+                case 'd' :
                     doDisplay(canvas);
                     break;
                 case 'x' : 	ch = 'X';				// when X detected program ends
