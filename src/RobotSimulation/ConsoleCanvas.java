@@ -10,7 +10,7 @@ public class ConsoleCanvas {
     public ConsoleCanvas(int height, int width, String studentNo) {
         this.height = height;
         this.width = width;
-        System.out.println("Initializing canvas with height = " + height + ", width = " + width);
+        System.out.println("Initialising canvas with height = " + height + ", width = " + width);
         canvas = new char[height][width];
         this.studentNo = studentNo;
         createCanvas();
@@ -18,7 +18,7 @@ public class ConsoleCanvas {
 
     private void createCanvas() {
         for(int i = 0; i<height; i++){
-            for(int j = 0; j<width; j++){
+            for(int j=0; j<width; j++){
                 canvas[i][j] = ' ';
             }
         }
@@ -56,7 +56,7 @@ public class ConsoleCanvas {
         if(x>=width || y>=height || x<0 || y<0){
             throw new IllegalArgumentException("Bot is out of bounds.");
         }
-        canvas[x][y] = identifier;
+        canvas[y][x] = identifier;
     }
 
     public void printCanvas() {
@@ -69,7 +69,7 @@ public class ConsoleCanvas {
     }
 
     public static void main(String[] args){
-        ConsoleCanvas c = new ConsoleCanvas(20, 20, "32024813");
+        ConsoleCanvas c = new ConsoleCanvas(10, 20, "32024813");
         c.showIt(4, 3, 'R');
         c.printCanvas();
     }

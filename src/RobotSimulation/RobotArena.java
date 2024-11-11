@@ -70,9 +70,9 @@ public class RobotArena {
     }
 
     public void showRobots(ConsoleCanvas c) {
-        for(int i = 0; i < robot.size(); i++) {
+        for (Robot value : robot) {
             //Accessing robot number i in robot and accessing the displayRobot method.
-            robot.get(i).displayRobot(c);
+            value.displayRobot(c);
         }
     }
 

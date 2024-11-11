@@ -34,7 +34,7 @@ public class Robot {
      * @param c the canvas used.
      */
     public void displayRobot(ConsoleCanvas c) {
-        c.showIt(y,x,'R');
+        c.showIt(x,y,'R');
     }
 
     public static void main(String[] args) {

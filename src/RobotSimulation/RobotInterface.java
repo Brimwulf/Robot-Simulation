@@ -18,7 +18,11 @@ public class RobotInterface {
      */
     public RobotInterface() {
         s = new Scanner(System.in);			// set up scanner for user input
-        myArena = new RobotArena(20, 10, 0);	// create arena of size 20*6
+        myArena = new RobotArena(20, 6, 0);	// create arena of size 20*6
+        int x_size = myArena.getX_size();
+        int y_size = myArena.getY_size();
+        ConsoleCanvas canvas = new ConsoleCanvas(y_size+1, x_size+1, "32024813");
+        int rNum = 0;
 
         char ch = ' ';
         do {
@@ -28,7 +32,6 @@ public class RobotInterface {
             switch (ch) {
                 case 'A' :
                 case 'a' :
-                    int rNum = 0;
                     myArena.addRobot(rNum+1);	// add a new Robot to arena
                     rNum++;
                     break;
@@ -38,7 +41,7 @@ public class RobotInterface {
                     //This needs to be the number of items in ArrayList
                     break;
                 case 'D' : case 'd' :
-                    doDisplay();
+                    doDisplay(canvas);
                     break;
                 case 'x' : 	ch = 'X';				// when X detected program ends
                     break;
@@ -48,10 +51,7 @@ public class RobotInterface {
         s.close();									// close scanner
     }
 
-    void doDisplay() {
-        int x_size = myArena.getX_size();
-        int y_size = myArena.getY_size();
-        ConsoleCanvas canvas = new ConsoleCanvas(y_size, x_size, "32024813");
+    void doDisplay(ConsoleCanvas canvas) {
         myArena.showRobots(canvas);
         canvas.printCanvas();
     }
