@@ -1,8 +1,9 @@
 package RobotSimulation;
 
 import java.io.Console;
+import java.io.Serializable;
 
-public class Robot {
+public class Robot implements Serializable {
     private int x;
     private int y;
     private int num;

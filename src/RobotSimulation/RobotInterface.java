@@ -18,14 +18,15 @@ public class RobotInterface {
      * then has main loop allowing user to enter commands
      */
     public RobotInterface() {
-        s = new Scanner(System.in);			// set up scanner for user input
-        myArena = new RobotArena(20, 6, 0);	// create arena of size 20*6
+        s = new Scanner(System.in); // set up scanner for user input
+
+        myArena = setupArena();	// Allow user to create the arena
         int rNum = 0;
 
         char ch = ' ';
         do {
             System.out.print("Enter (A)dd Robot, get (I)nformation, (D)isplay canvas, (M)ove all robots once," +
-                    " (R)un animation or e(X)it > ");
+                    " (R)un animation, (S)ave arena or e(X)it > ");
             ch = s.next().charAt(0);
             s.nextLine();
             switch (ch) {
@@ -52,6 +53,9 @@ public class RobotInterface {
                 case 'r' :
                     animateCanvas();
                     break;
+                case 'S' :
+                case 's' :
+                    myArena.saveArena();
                 case 'x' : 	ch = 'X';				// when X detected program ends
                     break;
             }
@@ -80,6 +84,38 @@ public class RobotInterface {
                 return;      // I could also have this part of the code retry after waiting.
             }
         }
+    }
+
+    public RobotArena setupArena() {
+        char choice = ' ';
+        do {
+            System.out.println("Do you want to (C)reate a new arena or (L)oad from a file? " +
+                    "Enter X to create a default arena > ");
+            choice = s.next().charAt(0);
+            s.nextLine();
+            switch (choice) {
+                case 'C':
+                case 'c':
+                    // Prompt user for arena dimensions
+                    System.out.println("Enter arena width > ");
+                    int width = s.nextInt();
+                    System.out.println("Enter arena height > ");
+                    int height = s.nextInt();
+                    return myArena = new RobotArena(width, height);
+                case 'L':
+                case 'l':
+                    myArena = RobotArena.loadArena();
+                    if(myArena != null){
+                        return myArena;
+                    } else {
+                        System.out.println("Please retry...\n");
+                    }
+                    break;
+                case 'x' : choice = 'X';
+                    break;
+            }
+        } while(choice != 'X');
+        return new RobotArena(20,6); // creates a default arena
     }
 
     public static void main(String[] args) {

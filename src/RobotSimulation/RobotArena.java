@@ -1,9 +1,10 @@
 package RobotSimulation;
-import java.io.Console;
+import javax.swing.*;
+import java.io.*;
 import java.util.Random;
 import java.util.ArrayList;
 
-public class RobotArena {
+public class RobotArena implements Serializable {
     private int x_size;
     private int y_size;
     private ArrayList<Robot> robot;
@@ -20,7 +21,7 @@ public class RobotArena {
         return y_size;
     }
 
-    public RobotArena(int x_size, int y_size, int numRobots) {
+    public RobotArena(int x_size, int y_size) {
         this.x_size = x_size;
         this.y_size = y_size;
         //this.numRobots = numRobots;
@@ -103,8 +104,49 @@ public class RobotArena {
         }
     }
 
+    public void saveArena() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save arena to file");
+        int userSelect = fileChooser.showSaveDialog(null);
+
+        if(userSelect == JFileChooser.APPROVE_OPTION) {
+            String fileName = fileChooser.getSelectedFile().getAbsolutePath();
+            try(FileOutputStream fileOut = new FileOutputStream(fileName);
+                ObjectOutputStream out = new ObjectOutputStream(fileOut)){
+                out.writeObject(this);
+                System.out.println("Saved arena to " + fileName);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+    }
+
+    public static RobotArena loadArena() {
+        System.out.println("Attempting to load an arena...");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Load arena from file");
+        int userSelect = fileChooser.showOpenDialog(null);
+
+        if(userSelect == JFileChooser.APPROVE_OPTION) {
+            String fileName = fileChooser.getSelectedFile().getAbsolutePath();
+            try(FileInputStream fileIn = new FileInputStream(fileName);
+                ObjectInputStream in = new ObjectInputStream(fileIn)) {
+                RobotArena arena = (RobotArena) in.readObject(); // This deserealisation the arena object.
+                System.out.println("Loaded arena from " + fileName);
+                return arena;
+            } catch (IOException | ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            System.out.println("No file selected");
+        }
+        System.out.println("Loading failed.");
+        return null;
+    }
+
     public static void main(String[] args) {
-        RobotArena a = new RobotArena(20,20,3);
+        RobotArena a = new RobotArena(20,20);
         a.addRobot(1);
         a.addRobot(2);
         a.addRobot(3);
