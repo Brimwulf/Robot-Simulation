@@ -50,8 +50,8 @@ public class RobotArena {
         int rX, rY;
         Robot newRobot;
         do {
-            rX = randomGenerator.nextInt(x_size);
-            rY = randomGenerator.nextInt(y_size);
+            rX = randomGenerator.nextInt(x_size-2)+1;
+            rY = randomGenerator.nextInt(y_size-2)+1;
             newRobot = new Robot(num, rX, rY, Direction.getRandomDirection());
         }
         while (isHere(num -1, rX, rY));
@@ -77,7 +77,7 @@ public class RobotArena {
     }
 
     private boolean isWithinBounds(int x, int y) {
-        return x >= 0 && x < x_size && y >= 0 && y < y_size; // checks whether new x, y coords are within the arena.
+        return x > 0 && x < x_size-1 && y > 0 && y < y_size-1; // checks whether new x, y coords are within the arena.
     }
 
     private boolean isOccupied(int x, int y, Robot testRobot) {
@@ -95,6 +95,12 @@ public class RobotArena {
         int newY = newPos[1];
 
         return isWithinBounds(newX, newY) && !isOccupied(newX, newY, r);
+    }
+
+    public void moveAll(RobotArena arena) {
+        for(Robot item : arena.robot) {
+            item.tryToMove(arena);
+        }
     }
 
     public static void main(String[] args) {

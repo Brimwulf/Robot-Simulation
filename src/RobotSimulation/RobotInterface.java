@@ -1,6 +1,7 @@
 package RobotSimulation;
 import java.awt.*;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Simple program to show arena with multiple robots
@@ -19,16 +20,12 @@ public class RobotInterface {
     public RobotInterface() {
         s = new Scanner(System.in);			// set up scanner for user input
         myArena = new RobotArena(20, 6, 0);	// create arena of size 20*6
-        int x_size = myArena.getX_size();
-        int y_size = myArena.getY_size();
-        // Creating canvas object here rather than in doDisplay. This is better than create a new object each time
-        // doDisplay is called.
-        ConsoleCanvas canvas = new ConsoleCanvas(y_size+1, x_size+1, "32024813");
         int rNum = 0;
 
         char ch = ' ';
         do {
-            System.out.print("Enter (A)dd Robot, get (I)nformation, (D)isplay canvas or e(X)it > ");
+            System.out.print("Enter (A)dd Robot, get (I)nformation, (D)isplay canvas, (M)ove all robots once," +
+                    " (R)un animation or e(X)it > ");
             ch = s.next().charAt(0);
             s.nextLine();
             switch (ch) {
@@ -44,7 +41,16 @@ public class RobotInterface {
                     break;
                 case 'D' :
                 case 'd' :
-                    doDisplay(canvas);
+                    doDisplay();
+                    break;
+                case 'M' :
+                case 'm' :
+                    myArena.moveAll(myArena);
+                    doDisplay();
+                    break;
+                case 'R' :
+                case 'r' :
+                    animateCanvas();
                     break;
                 case 'x' : 	ch = 'X';				// when X detected program ends
                     break;
@@ -54,9 +60,26 @@ public class RobotInterface {
         s.close();									// close scanner
     }
 
-    void doDisplay(ConsoleCanvas canvas) {
+    public void doDisplay() {
+        int x_size = myArena.getX_size();
+        int y_size = myArena.getY_size();
+        ConsoleCanvas canvas = new ConsoleCanvas(y_size, x_size, "32024813");
         myArena.showRobots(canvas);
         canvas.printCanvas();
+    }
+
+    public void animateCanvas(){
+        for(int i=0; i<10; i++){
+            myArena.moveAll(myArena);
+            System.out.print(myArena.toString(myArena.getNumRobots()));
+            doDisplay();
+            try {
+                TimeUnit.MILLISECONDS.sleep(200);
+            } catch (InterruptedException e) {
+                System.out.println("Thread was interrupted. Stopping...");
+                return;      // I could also have this part of the code retry after waiting.
+            }
+        }
     }
 
     public static void main(String[] args) {

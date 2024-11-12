@@ -53,7 +53,7 @@ public class ConsoleCanvas {
     }
 
     public void showIt(int x, int y, char identifier) {
-        if(x>=width || y>=height || x<0 || y<0){
+        if(x>=width-1 || y>=height-1 || x<0 || y<0){
             throw new IllegalArgumentException("Bot is out of bounds.");
         }
         canvas[y][x] = identifier;

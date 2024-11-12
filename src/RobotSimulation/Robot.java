@@ -52,11 +52,16 @@ public class Robot {
         return new int[]{newX, newY}; // This creates an array with the new x,y coords that have been calculated.
     }
 
-    public void tryToMove() {
+    public void tryToMove(RobotArena arena) {
         int[] newPosition = calculateNewPosition();
-        this.x = newPosition[0];
-        this.y = newPosition[1];
-
+        if(arena.canMoveHere(this)) {
+            this.x = newPosition[0];
+            this.y = newPosition[1];
+        }
+        else {
+            this.direction = Direction.getNextDirection(this.direction);
+            // can also make the robot move 1 in the new direction after moving
+        }
     }
 
     /**

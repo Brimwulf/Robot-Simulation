@@ -4,8 +4,8 @@ import java.util.Random;
 
 public enum Direction {
     North,
-    South,
     East,
+    South,
     West;
 
     /**
@@ -18,5 +18,12 @@ public enum Direction {
         Random rand = new Random();
         return values()[rand.nextInt(values().length)];
 
+    }
+
+    public static Direction getNextDirection(Direction current) {
+        Direction[] directions = Direction.values();
+        int currentIndex = current.ordinal();
+        int nextIndex = (currentIndex + 1) % directions.length;
+        return directions[nextIndex];
     }
 }
