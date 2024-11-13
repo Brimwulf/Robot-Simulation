@@ -56,6 +56,7 @@ public class RobotInterface {
                 case 'S' :
                 case 's' :
                     myArena.saveArena();
+                    break;
                 case 'x' : 	ch = 'X';				// when X detected program ends
                     break;
             }
@@ -101,18 +102,19 @@ public class RobotInterface {
                     int width = s.nextInt();
                     System.out.println("Enter arena height > ");
                     int height = s.nextInt();
-                    return myArena = new RobotArena(width, height);
+                    return myArena = new RobotArena(width, height); // returns a new arena with set dimensions
                 case 'L':
                 case 'l':
-                    myArena = RobotArena.loadArena();
+                    myArena = RobotArena.loadArena();   // Calling the load function
                     if(myArena != null){
-                        return myArena;
+                        return myArena; // returns the loaded arena if successful
                     } else {
-                        System.out.println("Please retry...\n");
+                        System.out.println("Please retry\n");    // loops again if unsuccessful
                     }
                     break;
                 case 'x' : choice = 'X';
                     break;
+                    // It would be good for the program to terminate here instead of (or in addition to) defaulting.
             }
         } while(choice != 'X');
         return new RobotArena(20,6); // creates a default arena

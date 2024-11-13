@@ -102,17 +102,21 @@ public class RobotArena implements Serializable {
         }
     }
 
+    // This function is for handling the interfacing of files with the code.
     private static String getFilePath(String dialogTitle, int dialogType) {
+        // Creating an instance of JFileChooser called fileChooser
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle(dialogTitle);
+        fileChooser.setDialogTitle(dialogTitle);    // The dialog title is passed in when function is called.
         int userSelection;
 
+        // This block determines whether the file is being read or saved to. For either, the behaviour changes.
         if(dialogType == JFileChooser.SAVE_DIALOG) {
             userSelection = fileChooser.showSaveDialog(null);
         } else {
             userSelection = fileChooser.showOpenDialog(null);
         }
 
+        // If userSelection is set to 0 by either case and thus = to APPROVE_OPTION, this block executes.
         if(userSelection == JFileChooser.APPROVE_OPTION) {
             return fileChooser.getSelectedFile().getAbsolutePath();
         } else {
@@ -121,11 +125,14 @@ public class RobotArena implements Serializable {
         }
     }
 
+    // This method handles writing the object and its contents to a file.
     private boolean writeArenaToFile(String fileName) {
+        // This try catch block ensures that the filestream executes properly and closes once finished.
+        // The FileOutputStream is wrapped within the ObjectOutputStream
         try(FileOutputStream fileOut = new FileOutputStream(fileName);
             ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-            out.writeObject(this);
-            return true;
+            out.writeObject(this);  // This line writes the object into the file.
+            return true;    // Sets the output to true because the file was written to successfully
         } catch(IOException e) {
             e.printStackTrace();
             System.out.println("Error occurred while writing to file...");
@@ -137,7 +144,7 @@ public class RobotArena implements Serializable {
     public void saveArena() {
         String fileName = getFilePath("Save arena to file", JFileChooser.SAVE_DIALOG);
         if(fileName != null) {
-            if(writeArenaToFile(fileName)) {
+            if(writeArenaToFile(fileName)) {    // Calls the write arena function on the file path.
                 System.out.println("Saved arena to file " + fileName);
             } else {
                 System.out.println("Failed to save arena to file");
@@ -146,11 +153,13 @@ public class RobotArena implements Serializable {
     }
 
     private static RobotArena readArenaFromFile(String fileName) {
+        // Try catch block for reading from a file. Again ensuring proper execution and closing
         try (FileInputStream fileIn = new FileInputStream(fileName);
              ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            // This line creates a new arena and assigns it the one from the file
             RobotArena arena = (RobotArena) in.readObject();
             System.out.println("Read arena from " + fileName);
-            return arena;
+            return arena;   // return the loaded arena.
         } catch(IOException | ClassNotFoundException e) {
             e.printStackTrace();
             System.out.println("Error occurred while reading arena file...");
@@ -158,7 +167,7 @@ public class RobotArena implements Serializable {
         }
     }
 
-    // Method to load an arena state from a file.
+    // This method handles the logic for getting the file and then reading from it.
     public static RobotArena loadArena() {
         System.out.println("Attempting to load an arena...");
 
