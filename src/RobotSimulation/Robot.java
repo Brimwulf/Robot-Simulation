@@ -1,6 +1,5 @@
 package RobotSimulation;
 
-import java.io.Console;
 import java.io.Serializable;
 
 public class Robot implements Serializable {
@@ -36,6 +35,7 @@ public class Robot implements Serializable {
         int newX = this.x;
         int newY = this.y;
 
+        //This code block handles the change in coordinates for each cardinal direction.
         switch (this.direction) {
             case North :
                 newX -= 1;
