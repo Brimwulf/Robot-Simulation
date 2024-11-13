@@ -102,30 +102,59 @@ public class RobotArena implements Serializable {
         }
     }
 
+    private static String getFilePath(String dialogTitle, int dialogType) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle(dialogTitle);
+        int userSelection;
+
+        if(dialogType == JFileChooser.SAVE_DIALOG) {
+            userSelection = fileChooser.showSaveDialog(null);
+        } else {
+            userSelection = fileChooser.showOpenDialog(null);
+        }
+
+        if(userSelection == JFileChooser.APPROVE_OPTION) {
+            return fileChooser.getSelectedFile().getAbsolutePath();
+        } else {
+            System.out.println("No file selected.");
+            return null;
+        }
+    }
+
+    private boolean writeArenaToFile(String fileName) {
+        try(FileOutputStream fileOut = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+            out.writeObject(this);
+            return true;
+        } catch(IOException e) {
+            e.printStackTrace();
+            System.out.println("Error occurred while writing to file...");
+            return false;
+        }
+    }
+
     // Method to save the current arena state
     public void saveArena() {
-        // Creating an instance of JFileChooser allowing for file management.
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Save arena to file"); // This sets the title of the dialog box
-
-        // This variable is used to save the user choice.
-        int userSelect = fileChooser.showSaveDialog(null);
-        // And this executes if the user chooses to save the file.
-        if(userSelect == JFileChooser.APPROVE_OPTION) {
-            // This variable saves the file path.
-            String fileName = fileChooser.getSelectedFile().getAbsolutePath();
-
-            // This try catch block ensures that file output stream executes properly and closes file stream.
-            try(FileOutputStream fileOut = new FileOutputStream(fileName);
-                ObjectOutputStream out = new ObjectOutputStream(fileOut)){
-                out.writeObject(this);  // This is the line that writes the object into the file.
-                System.out.println("Saved arena to " + fileName);
-            } catch (IOException ex) {
-                // prints the stack trace if an error occurs during the save process.
-                // I can change this to a println for a robust method of error logging.
-                ex.printStackTrace();
+        String fileName = getFilePath("Save arena to file", JFileChooser.SAVE_DIALOG);
+        if(fileName != null) {
+            if(writeArenaToFile(fileName)) {
+                System.out.println("Saved arena to file " + fileName);
+            } else {
+                System.out.println("Failed to save arena to file");
             }
+        }
+    }
 
+    private static RobotArena readArenaFromFile(String fileName) {
+        try (FileInputStream fileIn = new FileInputStream(fileName);
+             ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            RobotArena arena = (RobotArena) in.readObject();
+            System.out.println("Read arena from " + fileName);
+            return arena;
+        } catch(IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Error occurred while reading arena file...");
+            return null;
         }
     }
 
@@ -133,30 +162,11 @@ public class RobotArena implements Serializable {
     public static RobotArena loadArena() {
         System.out.println("Attempting to load an arena...");
 
-        // Creates an instance of JFileChooser.
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Load arena from file");
-        // Saves the user choice
-        int userSelect = fileChooser.showOpenDialog(null);
-
-        // This block will execute if the user chooses a file.
-        if(userSelect == JFileChooser.APPROVE_OPTION) {
-            String fileName = fileChooser.getSelectedFile().getAbsolutePath();  // Saves the file path.
-            // Ensuring the file stream executes properly and closes once finished
-            try(FileInputStream fileIn = new FileInputStream(fileName);
-                ObjectInputStream in = new ObjectInputStream(fileIn)) {
-                // Need to create file input stream AND object input stream
-
-                RobotArena arena = (RobotArena) in.readObject(); // This deserealization the arena object.
-                System.out.println("Loaded arena from " + fileName);
-                return arena;
-            } catch (IOException | ClassNotFoundException ex) {
-                ex.printStackTrace();
-            }
-        } else {
-            System.out.println("No file selected");
+        String fileName = getFilePath("Load arena from file", JFileChooser.OPEN_DIALOG);
+        if(fileName != null) {
+            return readArenaFromFile(fileName);
         }
-        System.out.println("Loading failed.");
+        System.out.println("Failed to load arena.");
         return null;
     }
 
