@@ -50,6 +50,8 @@ public class RobotArena implements Serializable {
         do {
             rX = randomGenerator.nextInt(x_size-2)+1;
             rY = randomGenerator.nextInt(y_size-2)+1;
+            // Both coords need to be within the bounds of the arena hence the "-2" "+1".
+            // The -2 excludes the outer border spaces and the +1 places the robot within the border.
             newRobot = new Robot(num, rX, rY, Direction.getRandomDirection());
         }
         while (isHere(num -1, rX, rY));

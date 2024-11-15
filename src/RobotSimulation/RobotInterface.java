@@ -74,7 +74,7 @@ public class RobotInterface {
     }
 
     public void animateCanvas(){
-        for(int i=0; i<10; i++){
+        for(int i=0; i<10; i++){    // We want this to loop 10 times.
             myArena.moveAll(myArena);
             System.out.print(myArena.toString(myArena.getNumRobots()));
             doDisplay();
